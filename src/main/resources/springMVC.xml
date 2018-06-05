@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+    <context:component-scan base-package="com.ssm.controller">
+        <!--扫描servlet上的加了@Controller注解的类，别的@XXXControllrer注解都是继承于@Controller-->
+        <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
+
+
+
+    <!--设置向页面上的返回值都已json的格式返回,中间的property是配的gson的响应编码-->
+    <mvc:annotation-driven>
+        <mvc:message-converters>
+            <bean class="org.springframework.http.converter.json.GsonHttpMessageConverter">
+                <property name="supportedMediaTypes">
+                    <list>
+                        <value>text/html;charset=UTF-8</value>
+                        <value>text/plain;charset=UTF-8</value>
+                        <value>application/json;charset=UTF-8</value>
+                    </list>
+                </property>
+            </bean>
+        </mvc:message-converters>
+    </mvc:annotation-driven>
+
+    <!--拦截请求资源-->
+    <mvc:interceptors>
+        <!--  <bean class="com.ls.Intercepter.Intercepter"/>-->
+        <bean class="com.ssm.anchor.interceptor.OriginIntercepter"/>
+    </mvc:interceptors>
+
+
+</beans>

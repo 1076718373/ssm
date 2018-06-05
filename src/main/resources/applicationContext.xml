@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx.xsd
+        http://www.springframework.org/schema/mvc
+         http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+    <!--读取java代码中的所有注解-->
+    <mvc:annotation-driven/>
+
+    <!--开启自动扫描切面-->
+    <aop:aspectj-autoproxy proxy-target-class="true"/>
+
+    <!--扫描com.ls.包下的所有加了注解的springBean,并过滤注解为Controller的springbean-->
+    <context:component-scan base-package="com.ssm.*">
+        <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
+
+    <!--读取jdbc的配置文件，即连接数据库的信息-->
+    <context:property-placeholder location="classpath:jdbc.properties"/>
+
+    <!--将c3p0配置成bean-->
+    <bean id="comboPooledDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+        <property name="driverClass" value="${jdbcDriver}"/>
+        <property name="jdbcUrl" value="${jdbcUrl}"/>
+        <property name="user" value="${jdbcUsername}"/>
+        <property name="password" value="${jdbcPassword}"/>
+    </bean>
+
+    <!--再将之前读取mybatis的SqlsesssionFactory也配置成bean-->
+    <bean class="org.mybatis.spring.SqlSessionFactoryBean" id="sessionFactory">
+        <!--配置数据库的资源，使SqlSession可以读取到数据源-->
+        <property name="dataSource" ref="comboPooledDataSource"/>
+        <!--让SqlSession可以读取到mybatis的配置文件-->
+        <property name="configLocation" value="classpath:mybatis-config.xml"/>
+        <!--也让SqlSession可以读取到Mapper.xml文件-->
+        <property name="mapperLocations" value="classpath:mapper/*.xml"/>
+    </bean>
+
+    <!--dao层-mapper接口,全部配置SpringBean-->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.ssm.dao"/>
+        <property name="sqlSessionFactoryBeanName" value="sessionFactory"/>
+    </bean>
+
+    <!--配置事务Bean-->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="comboPooledDataSource"/>
+    </bean>
+
+
+    <!--配置事务的切面-->
+    <aop:config>
+
+    <!--切点的设置-->
+    <aop:pointcut id="stuService" expression="execution(* com.ssm.service..*(..))"/>
+
+    <aop:advisor advice-ref="txAdvice" pointcut-ref="stuService" order="2"/>
+    </aop:config>
+
+    <!--事务权限的设置-->
+    <tx:advice id="txAdvice">
+        <tx:attributes>
+            <tx:method name="*"/>
+            <tx:method name="select*" read-only="true"/>
+            <tx:method name="query*" read-only="true"/>
+            <tx:method name="delete*" read-only="false" propagation="REQUIRED"/>
+            <tx:method name="insert*" read-only="false" propagation="REQUIRED"/>
+            <tx:method name="update*" read-only="false" propagation="REQUIRED"/>
+        </tx:attributes>
+    </tx:advice>
+
+    <!--  &lt;!&ndash;开启文件上传&ndash;&gt;
+    <bean id="multipartResolver"
+          class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="maxUploadSize" value="102400000000"/>
+        <property name="maxInMemorySize" value="40960"/>
+        <property name="defaultEncoding" value="UTF-8"/>
+    </bean>-->
+
+    <!-- 全局异常处理 -->
+    <!--
+        <bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+            <property name="exceptionMappings">
+                <props>
+                    &lt;!&ndash; <prop key="java.lang.Exception"></prop> &ndash;&gt;
+                    <prop key="com.ls.exception.NoPermission">redirect:http://localhost:63343/Login/login/error.html</prop>
+                    <prop key="com.ls.exception.NoLoginException">redirect:http://localhost:63343/Login/login/login.html</prop>
+                </props>
+            </property>
+        </bean>
+        -->
+
+    <!-- 邮件服务 -->
+    <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+        <!--下面是qq发送版本的配置-->
+        <property name="host" value="smtp.qq.com"/><!--smtp.qq.com-->
+        <property name="protocol" value="smtp"/>
+        <property name="port" value="587"/>
+        <property name="username" value="1354320479@qq.com"/>
+        <property name="password" value="zzzjxhamxhcpgggj"/>
+
+        <property name="defaultEncoding" value="UTF-8"/>
+        <property name="javaMailProperties">
+            <props>
+                <prop key="mail.smtp.auth">true</prop>
+                <prop key="mail.smtp.timeout">25000</prop>
+            </props>
+        </property>
+
+    </bean>
+
+
+    </beans>

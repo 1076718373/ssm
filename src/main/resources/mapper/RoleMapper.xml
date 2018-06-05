@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssm.dao.RoleMapper">
+  <resultMap id="BaseResultMap" type="com.ssm.bean.Role">
+    <id column="Id" jdbcType="INTEGER" property="id" />
+    <result column="Name" jdbcType="VARCHAR" property="name" />
+    <result column="Int0" jdbcType="INTEGER" property="int0" />
+    <result column="String0" jdbcType="VARCHAR" property="string0" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    Id, Name, Int0, String0
+  </sql>
+
+
+  <select id="selectRoleIdByUserId" resultType="java.lang.Integer">
+    select RoleId from userroles where UserId = id
+  </select>
+
+
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from roles
+    where Id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from roles
+    where Id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.ssm.bean.Role">
+    insert into roles (Id, Name, Int0, 
+      String0)
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{int0,jdbcType=INTEGER}, 
+      #{string0,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ssm.bean.Role">
+    insert into roles
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        Id,
+      </if>
+      <if test="name != null">
+        Name,
+      </if>
+      <if test="int0 != null">
+        Int0,
+      </if>
+      <if test="string0 != null">
+        String0,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="int0 != null">
+        #{int0,jdbcType=INTEGER},
+      </if>
+      <if test="string0 != null">
+        #{string0,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ssm.bean.Role">
+    update roles
+    <set>
+      <if test="name != null">
+        Name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="int0 != null">
+        Int0 = #{int0,jdbcType=INTEGER},
+      </if>
+      <if test="string0 != null">
+        String0 = #{string0,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where Id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ssm.bean.Role">
+    update roles
+    set Name = #{name,jdbcType=VARCHAR},
+      Int0 = #{int0,jdbcType=INTEGER},
+      String0 = #{string0,jdbcType=VARCHAR}
+    where Id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

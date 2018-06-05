@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssm.dao.DynamicmessageMapper">
+  <resultMap id="BaseResultMap" type="com.ssm.bean.Dynamicmessage">
+    <id column="Id" jdbcType="INTEGER" property="id" />
+    <result column="StudentId" jdbcType="INTEGER" property="studentid" />
+    <result column="StudentName" jdbcType="VARCHAR" property="studentname" />
+    <result column="MessageContent" jdbcType="VARCHAR" property="messagecontent" />
+    <result column="IsOpen" jdbcType="VARCHAR" property="isopen" />
+    <result column="CreateTime" jdbcType="TIMESTAMP" property="createtime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    Id, StudentId, StudentName, MessageContent, IsOpen, CreateTime
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from dynamicmessages
+    where Id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from dynamicmessages
+    where Id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.ssm.bean.Dynamicmessage">
+    insert into dynamicmessages (Id, StudentId, StudentName, 
+      MessageContent, IsOpen, CreateTime
+      )
+    values (#{id,jdbcType=INTEGER}, #{studentid,jdbcType=INTEGER}, #{studentname,jdbcType=VARCHAR}, 
+      #{messagecontent,jdbcType=VARCHAR}, #{isopen,jdbcType=VARCHAR}, #{createtime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.ssm.bean.Dynamicmessage">
+    insert into dynamicmessages
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        Id,
+      </if>
+      <if test="studentid != null">
+        StudentId,
+      </if>
+      <if test="studentname != null">
+        StudentName,
+      </if>
+      <if test="messagecontent != null">
+        MessageContent,
+      </if>
+      <if test="isopen != null">
+        IsOpen,
+      </if>
+      <if test="createtime != null">
+        CreateTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="studentid != null">
+        #{studentid,jdbcType=INTEGER},
+      </if>
+      <if test="studentname != null">
+        #{studentname,jdbcType=VARCHAR},
+      </if>
+      <if test="messagecontent != null">
+        #{messagecontent,jdbcType=VARCHAR},
+      </if>
+      <if test="isopen != null">
+        #{isopen,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null">
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ssm.bean.Dynamicmessage">
+    update dynamicmessages
+    <set>
+      <if test="studentid != null">
+        StudentId = #{studentid,jdbcType=INTEGER},
+      </if>
+      <if test="studentname != null">
+        StudentName = #{studentname,jdbcType=VARCHAR},
+      </if>
+      <if test="messagecontent != null">
+        MessageContent = #{messagecontent,jdbcType=VARCHAR},
+      </if>
+      <if test="isopen != null">
+        IsOpen = #{isopen,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null">
+        CreateTime = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where Id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ssm.bean.Dynamicmessage">
+    update dynamicmessages
+    set StudentId = #{studentid,jdbcType=INTEGER},
+      StudentName = #{studentname,jdbcType=VARCHAR},
+      MessageContent = #{messagecontent,jdbcType=VARCHAR},
+      IsOpen = #{isopen,jdbcType=VARCHAR},
+      CreateTime = #{createtime,jdbcType=TIMESTAMP}
+    where Id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
