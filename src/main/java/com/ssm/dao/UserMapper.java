@@ -4,6 +4,8 @@ import com.ssm.bean.User;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface UserMapper {
     int deleteByPrimaryKey(Integer id);
@@ -19,4 +21,8 @@ public interface UserMapper {
     int updateByPrimaryKey(User record);
 
     User selectUserByNameAndPassWord(@Param("username") String username,@Param("password") String password);
+
+    List<User> selectAllUser();
+
+    int updateUserById(@Param("userId") Integer userId,@Param("mail") String mail,@Param("tel") String tel);
 }

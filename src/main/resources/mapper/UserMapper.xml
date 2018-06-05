@@ -24,6 +24,10 @@
     where LoginName=#{username} and Password=#{password}
   </select>
 
+  <select id="selectAllUser" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List" /> from users
+  </select>
+
 
 
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
@@ -34,7 +38,7 @@
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from users
-    where Id = #{id,jdbcType=INTEGER}
+    where Id = #{id}
   </delete>
   <insert id="insert" parameterType="com.ssm.bean.User">
     insert into users (Id, LoginName, Password, 
@@ -113,6 +117,10 @@
       </if>
     </trim>
   </insert>
+  <update id="updateUserById">
+    update users set ProtectEMail = #{mail}, protectMTel = #{tel}  where Id = #{userId}
+
+  </update>
   <update id="updateByPrimaryKeySelective" parameterType="com.ssm.bean.User">
     update users
     <set>
