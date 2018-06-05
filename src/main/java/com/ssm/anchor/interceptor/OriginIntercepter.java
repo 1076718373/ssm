@@ -23,7 +23,6 @@ public class OriginIntercepter extends HandlerInterceptorAdapter {
         super.postHandle(request, response, handler, modelAndView);
     }
 
-    @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
         response.setCharacterEncoding("utf-8");
         response.setHeader("Access-Control-Allow-Origin", "*");

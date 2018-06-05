@@ -20,4 +20,7 @@ public interface PermissionMapper {
 
     int updateByPrimaryKey(Permission record);
 
+    List<String> selectURL();
+
+    Integer insertPermissions(List<Permission> list);
 }

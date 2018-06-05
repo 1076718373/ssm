@@ -13,6 +13,19 @@
   </sql>
 
 
+  <select id="selectURL" resultType="java.lang.String">
+    select permissionValue from  permissiontb
+  </select>
+
+  <insert id="insertPermissions" parameterType="com.ssm.bean.Permission">
+    insert into (permissionValue,permissionModule,permissionName,permissionLastUpdateTime)
+    values
+    <foreach collection="list" item="item" separator=",">
+      (#{item.permissionvalue},#{item.permissionmodule},#{item.permissionname},#{item.permissionlastupdatetime})
+    </foreach>
+  </insert>
+
+
 
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
