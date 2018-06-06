@@ -19,6 +19,24 @@
   </sql>
 
 
+  <select id="selectUserAddRole" resultType="java.lang.Integer">
+    select count(*) from userroles where UserId=#{userId} and RoleId=#{roleId}
+  </select>
+
+
+  <insert id="insertUserAddRole" >
+    insert into userroles (UserId,RoleId)
+    values (#{userId},#{roleId})
+  </insert>
+
+
+  <select id="selectUserByName" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List" /> from users
+    where LoginName=#{name}
+  </select>
+
+
+
   <select id="selectUserByNameAndPassWord" resultMap="BaseResultMap">
     select <include refid="Base_Column_List" /> from users
     where LoginName=#{username} and Password=#{password}
