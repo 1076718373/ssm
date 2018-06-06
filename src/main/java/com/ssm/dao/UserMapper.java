@@ -30,5 +30,9 @@ public interface UserMapper {
 
     boolean updateAddLock(@Param("statue") Integer statue,@Param("userid") Integer userid);
     boolean updateDelLock(@Param("statue") Integer statue,@Param("userid") Integer userid);
+    User selectUserByName(String name);
 
+    Integer selectUserAddRole(@Param("userId") Integer userId, @Param("roleId") Integer roleId);
+
+    Integer insertUserAddRole(@Param("userId") Integer userId, @Param("roleId")Integer roleId);
 }

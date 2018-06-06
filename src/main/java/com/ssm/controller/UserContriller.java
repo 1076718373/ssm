@@ -35,7 +35,7 @@ public class UserContriller {
      * @param id 被重置密码的用户ID
      * @return 返回给前端操作信息
      */
-    @GetMapping("/restPwd")
+    @GetMapping(value = "/restPwd",name = "重置密码")
     public Page restPwd(Integer id){
         Integer i= userService.updatePwdByID(id);
         Page page = null;
@@ -54,7 +54,7 @@ public class UserContriller {
      * @param statue 1为没锁定，0为锁定
      * @return
      */
-    @GetMapping("updateLockStatue")
+    @GetMapping(value = "updateLockStatue",name = "更新锁定状态")
     public Page updateLockStatue(Integer statue, Integer userid){
         Page page = null;
         if(statue ==1){
@@ -67,5 +67,23 @@ public class UserContriller {
             page = new Page(161,"用户解锁成功");
         }
         return page;
+    }
+    @PostMapping(value = "/getUserName",name = "查询数据库中已存在的用户名")
+    public Page selectUserByName(String name){
+        return userService.selectUserByName(name);
+    }
+
+    @PostMapping(value = "/add",name = "添加用户")
+    public Page insertUser(String username,String password,String email){
+        User user= new User();
+        user.setLoginname(username);
+        user.setPassword(password);
+        user.setProtectemail(email);
+        return userService.insertUser(user);
+    }
+
+    @PostMapping(value = "/addrole",name = "爲用戶添加角色")
+    public Page insertUserAddRole(Integer userId,Integer roleId){
+        return userService.insertUserAddRole(userId,roleId);
     }
 }

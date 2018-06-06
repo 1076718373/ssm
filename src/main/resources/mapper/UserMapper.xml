@@ -139,6 +139,21 @@
     update users set ProtectEMail = #{mail}, protectMTel = #{tel}  where Id = #{userId}
 
   </update>
+  <select id="selectUserAddRole" resultType="java.lang.Integer">
+  select count(*) from userroles where UserId=#{userId} and RoleId=#{roleId}
+</select>
+
+
+  <insert id="insertUserAddRole" >
+  insert into userroles (UserId,RoleId)
+  values (#{userId},#{roleId})
+</insert>
+
+
+  <select id="selectUserByName" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List" /> from users
+    where LoginName=#{name}
+  </select>
 
   <update id="updatePwdByID" parameterType="java.lang.Integer">
    update users set Password="ysd123" where id =#{id}
