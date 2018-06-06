@@ -25,4 +25,10 @@ public interface UserMapper {
     List<User> selectAllUser();
 
     int updateUserById(@Param("userId") Integer userId,@Param("mail") String mail,@Param("tel") String tel);
+
+    int updatePwdByID(Integer id);
+
+    boolean updateAddLock(@Param("statue") Integer statue,@Param("userid") Integer userid);
+    boolean updateDelLock(@Param("statue") Integer statue,@Param("userid") Integer userid);
+
 }

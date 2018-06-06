@@ -121,6 +121,19 @@
     update users set ProtectEMail = #{mail}, protectMTel = #{tel}  where Id = #{userId}
 
   </update>
+
+  <update id="updatePwdByID" parameterType="java.lang.Integer">
+   update users set Password="ysd123" where id =#{id}
+  </update>
+
+  <update id="updateAddLock" parameterType="java.lang.Integer">
+    update users set IsLockout="是" where id=#{userid}
+  </update>
+
+  <update id="updateDelLock" parameterType="java.lang.Integer">
+    update users set IsLockout="否" where id=#{userid}
+    </update>
+
   <update id="updateByPrimaryKeySelective" parameterType="com.ssm.bean.User">
     update users
     <set>
