@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssm.dao.mysql.RoleMapper">
+    <resultMap id="BaseResultMap" type="com.ssm.bean.mysql.Role">
+        <id column="Id" jdbcType="INTEGER" property="id"/>
+        <result column="Name" jdbcType="VARCHAR" property="name"/>
+        <result column="Int0" jdbcType="INTEGER" property="int0"/>
+        <result column="String0" jdbcType="VARCHAR" property="string0"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        Id, Name, Int0, String0
+    </sql>
+
+    <select id="selectAllRoleName" resultType="java.lang.String">
+        select Name from roles
+    </select>
+
+    <select id="selectAllRoleId" resultType="java.lang.String">
+        select Id from roles
+    </select>
+
+    <select id="selectRoleIdByUserId" resultType="java.lang.Integer">
+        select RoleId from userroles where UserId = id
+    </select>
+
+    <select id="selectRoleByUserId" resultType="java.lang.String">
+        select Name from roles where Id= (select RoleId from userroles where UserId = #{userId})
+    </select>
+
+
+    <select id="selectAll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from roles
+    </select>
+
+    <delete id="deleteRoleAndModuleByRoleId" parameterType="java.lang.Integer">
+        delete from rolemodules where RoleId=#{id}
+    </delete>
+
+    <delete id="deleteRoleAndPermissionByRoleId" parameterType="java.lang.Integer">
+        delete from rolepermissiontb where roleId=#{id}
+    </delete>
+
+    <delete id="deleteRoleAndUserByRoleId" parameterType="java.lang.Integer">
+        delete from userroles where RoleId=#{id}
+    </delete>
+
+
+    <select id="selectRoleByModuleId" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from roles
+        where Id in (select RoleId from rolemodules where ModuleId= #{moduleId})
+    </select>
+
+    <select id="selectRoleAndModuleById" resultType="java.lang.Integer">
+        select count(*) from rolemodules where RoleId=#{roleId} and ModuleId =#{moduleId}
+    </select>
+
+    <insert id="InsertRoleAndModuleById" parameterType="java.lang.Integer">
+        insert into rolemodules (RoleId,ModuleId)
+        values (#{roleId},#{moduleId})
+    </insert>
+
+    <delete id="deleteModuleAndRoleByModuleId">
+        delete from rolemodules where RoleId=#{roleId} and ModuleId=#{moduleId}
+    </delete>
+
+
+    <select id="selectRoleByName" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from roles
+        where Name=#{name}
+    </select>
+
+
+    <delete id="deleteRoleById" parameterType="java.lang.Integer">
+        delete from roles where Id=#{id}
+    </delete>
+
+    <update id="updateRoleById">
+        update roles set Name =#{name} where Id=#{id}
+    </update>
+
+
+    <insert id="insertRole" parameterType="java.lang.String">
+        insert into roles (name) values (#{name})
+    </insert>
+
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from roles
+        where Id = #{id,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from roles
+        where Id = #{id,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" parameterType="com.ssm.bean.mysql.Role">
+        insert into roles (Id, Name, Int0,
+        String0)
+        values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{int0,jdbcType=INTEGER},
+        #{string0,jdbcType=VARCHAR})
+    </insert>
+    <insert id="insertSelective" parameterType="com.ssm.bean.mysql.Role">
+        insert into roles
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                Id,
+            </if>
+            <if test="name != null">
+                Name,
+            </if>
+            <if test="int0 != null">
+                Int0,
+            </if>
+            <if test="string0 != null">
+                String0,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="name != null">
+                #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="int0 != null">
+                #{int0,jdbcType=INTEGER},
+            </if>
+            <if test="string0 != null">
+                #{string0,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.ssm.bean.mysql.Role">
+        update roles
+        <set>
+            <if test="name != null">
+                Name = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="int0 != null">
+                Int0 = #{int0,jdbcType=INTEGER},
+            </if>
+            <if test="string0 != null">
+                String0 = #{string0,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where Id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.ssm.bean.mysql.Role">
+        update roles
+        set Name = #{name,jdbcType=VARCHAR},
+        Int0 = #{int0,jdbcType=INTEGER},
+        String0 = #{string0,jdbcType=VARCHAR}
+        where Id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <!--查询所有角色信息-->
+    <select id="queryAllRoles" resultMap="BaseResultMap">
+        select * from roles
+    </select>
+
+    <!--设置用户角色-->
+    <insert id="updateRoleName" parameterType="java.lang.String">
+        INSERT INTO `ssmtest`.`userroles` (`UserId`, `RoleId`) VALUES ((select id from users where
+        LoginName=#{oldRoleName}), (select id from roles where Name =#{newRoleName}));
+    </insert>
+</mapper>

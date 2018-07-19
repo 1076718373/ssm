@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssm.dao.mysql.UserMapper">
+    <resultMap id="BaseResultMap" type="com.ssm.bean.mysql.User">
+        <id column="Id" jdbcType="INTEGER" property="id"/>
+        <result column="LoginName" jdbcType="VARCHAR" property="loginname"/>
+        <result column="Password" jdbcType="VARCHAR" property="password"/>
+        <result column="IsLockout" jdbcType="CHAR" property="islockout"/>
+        <result column="LastLoginTime" jdbcType="TIMESTAMP" property="lastlogintime"/>
+        <result column="PsdWrongTime" jdbcType="INTEGER" property="psdwrongtime"/>
+        <result column="LockTime" jdbcType="TIMESTAMP" property="locktime"/>
+        <result column="ProtectEMail" jdbcType="VARCHAR" property="protectemail"/>
+        <result column="protectMTel" jdbcType="VARCHAR" property="protectmtel"/>
+        <result column="CreateTime" jdbcType="TIMESTAMP" property="createtime"/>
+        <result column="LoginIP" jdbcType="VARCHAR" property="loginip"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        Id, LoginName, Password, IsLockout, LastLoginTime, PsdWrongTime, LockTime, ProtectEMail,
+        protectMTel, CreateTime, LoginIP
+    </sql>
+
+    <insert id="insertRoleByUserId">
+        insert into userroles(UserId,RoleId) values(#{userId},#{roleId});
+    </insert>
+
+    <update id="udateUserIPAndTimeByUsername">
+        update users set LastLoginTime = #{date},LoginIP = #{remoteHost} where LoginName = #{username}
+    </update>
+
+
+    <!--登录-->
+    <select id="selectUserByNameAndPassWord" resultMap="BaseResultMap">
+        select *
+        from users
+        where LoginName=#{username} and Password=#{password}
+    </select>
+    <!--查询所有用户-->
+    <select id="selectAllUser" resultMap="BaseResultMap">
+        select * from users
+    </select>
+
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from users
+        where Id = #{id,jdbcType=INTEGER}
+    </select>
+    <!--删除用户通过id-->
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from users
+        where Id = #{id}
+    </delete>
+    <!--修改信息-->
+    <update id="updateUserById">
+        update users set ProtectEMail = #{mail}, protectMTel = #{tel} where Id = #{userId}
+
+    </update>
+
+    <!--重置密码-->
+    <update id="updatePwdByID" parameterType="java.lang.Integer">
+        update users set Password="ysd123" where id =#{id}
+    </update>
+    <!--加锁-->
+    <update id="updateAddLock" parameterType="java.lang.Integer">
+        update users set IsLockout="是",PsdWrongTime = 5 where id=#{userid}
+    </update>
+    <!--解锁-->
+    <update id="updateDelLock" parameterType="java.lang.Integer">
+        update users set IsLockout="否",PsdWrongTime = 0 where id=#{userid}
+    </update>
+
+    <select id="selectUserByNameOrLock" resultMap="BaseResultMap">
+        select * from users where 1 = 1
+        <if test="name != null and name != '' ">
+            and LoginName like CONCAT(CONCAT('%', #{name}), '%')
+        </if>
+        <if test="lock != null and lock != '' ">
+            and IsLockout = #{lock}
+        </if>
+    </select>
+
+    <!--添加用户-->
+    <insert id="insertAddUser">
+        insert into users(LoginName,Password,ProtectEMail,protectMTel)
+        values (#{addName},#{addPwd},#{addEmail},#{addPhone})
+    </insert>
+
+    <delete id="deleteUserRoleByUserId">
+        delete from userroles where UserId = #{userId}
+    </delete>
+
+    <update id="updateLoginTimeByUsername">
+        update users set PsdWrongTime = PsdWrongTime + 1 where LoginName = #{username}
+    </update>
+    <update id="updateByPrimaryKeySelective"></update>
+    <update id="updateByPrimaryKey"></update>
+
+
+    <insert id="insertSelective" parameterType="com.ssm.bean.mysql.User">
+        insert into users
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                Id,
+            </if>
+            <if test="loginname != null">
+                LoginName,
+            </if>
+            <if test="password != null">
+                Password,
+            </if>
+            <if test="islockout != null">
+                IsLockout,
+            </if>
+            <if test="lastlogintime != null">
+                LastLoginTime,
+            </if>
+            <if test="psdwrongtime != null">
+                PsdWrongTime,
+            </if>
+            <if test="locktime != null">
+                LockTime,
+            </if>
+            <if test="protectemail != null">
+                ProtectEMail,
+            </if>
+            <if test="protectmtel != null">
+                protectMTel,
+            </if>
+            <if test="createtime != null">
+                CreateTime,
+            </if>
+            <if test="loginip != null">
+                LoginIP,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="loginname != null">
+                #{loginname,jdbcType=VARCHAR},
+            </if>
+            <if test="password != null">
+                #{password,jdbcType=VARCHAR},
+            </if>
+            <if test="islockout != null">
+                #{islockout,jdbcType=CHAR},
+            </if>
+            <if test="lastlogintime != null">
+                #{lastlogintime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="psdwrongtime != null">
+                #{psdwrongtime,jdbcType=INTEGER},
+            </if>
+            <if test="locktime != null">
+                #{locktime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="protectemail != null">
+                #{protectemail,jdbcType=VARCHAR},
+            </if>
+            <if test="protectmtel != null">
+                #{protectmtel,jdbcType=VARCHAR},
+            </if>
+            <if test="createtime != null">
+                #{createtime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="loginip != null">
+                #{loginip,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <insert id="insert"></insert>
+</mapper>

@@ -5,9 +5,16 @@
 <configuration>
 
 
-
     <settings>
         <setting name="logImpl" value="LOG4J"/>
+        <!-- 是否开启全局缓存 -->
+        <setting name="cacheEnabled" value="true"/>
+        <!-- 查询时，关闭关联对象即时加载以提高性能 -->
+        <setting name="lazyLoadingEnabled" value="false"/>
+        <!-- 对于未知的SQL查询，允许返回不同的结果集以达到通用的效果 -->
+        <setting name="multipleResultSetsEnabled" value="true"/>
+        <!-- 设置关联对象加载的形态，此处为按需加载字段(加载字段由SQL指 定)，不会加载关联表的所有字段，以提高性能 -->
+        <setting name="aggressiveLazyLoading" value="true"/>
     </settings>
 
     <!--<typeAliases>
@@ -18,7 +25,6 @@
     <plugins>
         <plugin interceptor="com.github.pagehelper.PageInterceptor"/>
     </plugins>
-
 
 
 </configuration>

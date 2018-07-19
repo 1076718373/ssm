@@ -7,5 +7,6 @@ import java.lang.annotation.*;
 @Inherited
 public @interface Ann {
     String msg() default "";
+
     boolean flag() default true;//确定像日志表中存储参数还是参数类型
 }

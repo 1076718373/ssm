@@ -11,7 +11,6 @@
     </context:component-scan>
 
 
-
     <!--设置向页面上的返回值都已json的格式返回,中间的property是配的gson的响应编码-->
     <mvc:annotation-driven>
         <mvc:message-converters>
@@ -24,12 +23,29 @@
                     </list>
                 </property>
             </bean>
+            <!--&lt;!&ndash; 处理responseBody 里面日期类型 &ndash;&gt;-->
+            <!--<bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">-->
+            <!--<property name="objectMapper">-->
+            <!--<bean class="com.fasterxml.jackson.databind.ObjectMapper">-->
+            <!--<property name="dateFormat">-->
+            <!--<bean class="java.text.SimpleDateFormat">-->
+            <!--<constructor-arg type="java.lang.String" value="yyyy-MM-dd HH:mm:ss" />-->
+            <!--</bean>-->
+            <!--</property>-->
+            <!--</bean>-->
+            <!--</property>-->
+            <!--</bean>-->
+            <bean class="org.springframework.http.converter.StringHttpMessageConverter">
+                <constructor-arg value="UTF-8"/>
+            </bean>
         </mvc:message-converters>
+
+
     </mvc:annotation-driven>
 
     <!--拦截请求资源-->
     <mvc:interceptors>
-        <!--  <bean class="com.ls.Intercepter.Intercepter"/>-->
+        <!--<bean class="com.ssm.anchor.interceptor.LoginInterceptor"/>-->
         <bean class="com.ssm.anchor.interceptor.OriginIntercepter"/>
     </mvc:interceptors>
 

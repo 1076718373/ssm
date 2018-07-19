@@ -5,23 +5,35 @@ import java.util.List;
 //返回给web端的token信息的pojo类
 public class ToWebToken {
     private Integer id;
-    private List<String> roles;//用户所具有的角色
+    private String roles;//用户所具有的角色
     private List<String> permissions;//用户所具有的所有的权限
+    private String name;
 
+    public String getName() {
+        return name;
+    }
 
-    public ToWebToken(Integer id, List<String> roles, List<String> permissions) {
+    public ToWebToken(Integer id, String roles, List<String> permissions, String name) {
+        this.id = id;
+        this.roles = roles;
+        this.permissions = permissions;
+        this.name = name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public ToWebToken(Integer id, List<String> permissions) {
+        this.id = id;
+        this.permissions = permissions;
+    }
+
+    public ToWebToken(Integer id, String roles, List<String> permissions) {
         this.id = id;
         this.roles = roles;
         this.permissions = permissions;
     }
-    public ToWebToken(Integer id,  List<String> permissions) {
-        this.id = id;
-        this.permissions = permissions;
-    }
-
-    public ToWebToken() {
-    }
-
 
     public Integer getId() {
         return id;
@@ -31,11 +43,11 @@ public class ToWebToken {
         this.id = id;
     }
 
-    public List<String> getRoles() {
+    public String getRoles() {
         return roles;
     }
 
-    public void setRoles(List<String> roles) {
+    public void setRoles(String roles) {
         this.roles = roles;
     }
 

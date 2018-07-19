@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssm.dao.mysql.SystemlogMessageMapper">
+    <resultMap id="BaseResultMap" type="com.ssm.bean.mysql.SystemlogMessage">
+        <id column="idSystemLogMessage" jdbcType="INTEGER" property="idsystemlogmessage"/>
+        <result column="SystemLogMessage_Name" jdbcType="VARCHAR" property="systemlogmessageName"/>
+        <result column="SystemLogMessage_Roles" jdbcType="VARCHAR" property="systemlogmessageRoles"/>
+        <result column="SystemLogMessag_Method" jdbcType="VARCHAR" property="systemlogmessagMethod"/>
+        <result column="SystemLogMessage_description" jdbcType="VARCHAR" property="systemlogmessageDescription"/>
+        <result column="SystemLogMessage_params" jdbcType="VARCHAR" property="systemlogmessageParams"/>
+        <result column="SystemLogMessage_startTime" jdbcType="DATE" property="systemlogmessageStarttime"/>
+        <result column="SystemLogMessage_time" jdbcType="VARCHAR" property="systemlogmessageTime"/>
+        <result column="SystemLogMessage_successful" jdbcType="VARCHAR" property="systemlogmessageSuccessful"/>
+    </resultMap>
+    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.ssm.bean.mysql.SystemlogMessage">
+        <result column="SystemLogMessage_exception" jdbcType="LONGVARCHAR" property="systemlogmessageException"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        idSystemLogMessage, SystemLogMessage_Name, SystemLogMessage_Roles, SystemLogMessag_Method,
+        SystemLogMessage_description, SystemLogMessage_params, SystemLogMessage_startTime,
+        SystemLogMessage_time, SystemLogMessage_successful
+    </sql>
+    <sql id="Blob_Column_List">
+        SystemLogMessage_exception
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from systemlogmessage
+        where idSystemLogMessage = #{idsystemlogmessage,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from systemlogmessage
+        where idSystemLogMessage = #{idsystemlogmessage,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" parameterType="com.ssm.bean.mysql.SystemlogMessage">
+        insert into systemlogmessage (idSystemLogMessage, SystemLogMessage_Name,
+        SystemLogMessage_Roles, SystemLogMessag_Method,
+        SystemLogMessage_description, SystemLogMessage_params,
+        SystemLogMessage_startTime, SystemLogMessage_time,
+        SystemLogMessage_successful, SystemLogMessage_exception
+        )
+        values (#{idsystemlogmessage,jdbcType=INTEGER}, #{systemlogmessageName,jdbcType=VARCHAR},
+        #{systemlogmessageRoles,jdbcType=VARCHAR}, #{systemlogmessagMethod,jdbcType=VARCHAR},
+        #{systemlogmessageDescription,jdbcType=VARCHAR}, #{systemlogmessageParams,jdbcType=VARCHAR},
+        #{systemlogmessageStarttime,jdbcType=DATE}, #{systemlogmessageTime,jdbcType=VARCHAR},
+        #{systemlogmessageSuccessful,jdbcType=VARCHAR}, #{systemlogmessageException,jdbcType=LONGVARCHAR}
+        )
+    </insert>
+    <insert id="insertSelective" parameterType="com.ssm.bean.mysql.SystemlogMessage">
+        insert into systemlogmessage
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="idsystemlogmessage != null">
+                idSystemLogMessage,
+            </if>
+            <if test="systemlogmessageName != null">
+                SystemLogMessage_Name,
+            </if>
+            <if test="systemlogmessageRoles != null">
+                SystemLogMessage_Roles,
+            </if>
+            <if test="systemlogmessagMethod != null">
+                SystemLogMessag_Method,
+            </if>
+            <if test="systemlogmessageDescription != null">
+                SystemLogMessage_description,
+            </if>
+            <if test="systemlogmessageParams != null">
+                SystemLogMessage_params,
+            </if>
+            <if test="systemlogmessageStarttime != null">
+                SystemLogMessage_startTime,
+            </if>
+            <if test="systemlogmessageTime != null">
+                SystemLogMessage_time,
+            </if>
+            <if test="systemlogmessageSuccessful != null">
+                SystemLogMessage_successful,
+            </if>
+            <if test="systemlogmessageException != null">
+                SystemLogMessage_exception,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="idsystemlogmessage != null">
+                #{idsystemlogmessage,jdbcType=INTEGER},
+            </if>
+            <if test="systemlogmessageName != null">
+                #{systemlogmessageName,jdbcType=VARCHAR},
+            </if>
+            <if test="systemlogmessageRoles != null">
+                #{systemlogmessageRoles,jdbcType=VARCHAR},
+            </if>
+            <if test="systemlogmessagMethod != null">
+                #{systemlogmessagMethod,jdbcType=VARCHAR},
+            </if>
+            <if test="systemlogmessageDescription != null">
+                #{systemlogmessageDescription,jdbcType=VARCHAR},
+            </if>
+            <if test="systemlogmessageParams != null">
+                #{systemlogmessageParams,jdbcType=VARCHAR},
+            </if>
+            <if test="systemlogmessageStarttime != null">
+                #{systemlogmessageStarttime,jdbcType=DATE},
+            </if>
+            <if test="systemlogmessageTime != null">
+                #{systemlogmessageTime,jdbcType=VARCHAR},
+            </if>
+            <if test="systemlogmessageSuccessful != null">
+                #{systemlogmessageSuccessful,jdbcType=VARCHAR},
+            </if>
+            <if test="systemlogmessageException != null">
+                #{systemlogmessageException,jdbcType=LONGVARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.ssm.bean.mysql.SystemlogMessage">
+        update systemlogmessage
+        <set>
+            <if test="systemlogmessageName != null">
+                SystemLogMessage_Name = #{systemlogmessageName,jdbcType=VARCHAR},
+            </if>
+            <if test="systemlogmessageRoles != null">
+                SystemLogMessage_Roles = #{systemlogmessageRoles,jdbcType=VARCHAR},
+            </if>
+            <if test="systemlogmessagMethod != null">
+                SystemLogMessag_Method = #{systemlogmessagMethod,jdbcType=VARCHAR},
+            </if>
+            <if test="systemlogmessageDescription != null">
+                SystemLogMessage_description = #{systemlogmessageDescription,jdbcType=VARCHAR},
+            </if>
+            <if test="systemlogmessageParams != null">
+                SystemLogMessage_params = #{systemlogmessageParams,jdbcType=VARCHAR},
+            </if>
+            <if test="systemlogmessageStarttime != null">
+                SystemLogMessage_startTime = #{systemlogmessageStarttime,jdbcType=DATE},
+            </if>
+            <if test="systemlogmessageTime != null">
+                SystemLogMessage_time = #{systemlogmessageTime,jdbcType=VARCHAR},
+            </if>
+            <if test="systemlogmessageSuccessful != null">
+                SystemLogMessage_successful = #{systemlogmessageSuccessful,jdbcType=VARCHAR},
+            </if>
+            <if test="systemlogmessageException != null">
+                SystemLogMessage_exception = #{systemlogmessageException,jdbcType=LONGVARCHAR},
+            </if>
+        </set>
+        where idSystemLogMessage = #{idsystemlogmessage,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.ssm.bean.mysql.SystemlogMessage">
+        update systemlogmessage
+        set SystemLogMessage_Name = #{systemlogmessageName,jdbcType=VARCHAR},
+        SystemLogMessage_Roles = #{systemlogmessageRoles,jdbcType=VARCHAR},
+        SystemLogMessag_Method = #{systemlogmessagMethod,jdbcType=VARCHAR},
+        SystemLogMessage_description = #{systemlogmessageDescription,jdbcType=VARCHAR},
+        SystemLogMessage_params = #{systemlogmessageParams,jdbcType=VARCHAR},
+        SystemLogMessage_startTime = #{systemlogmessageStarttime,jdbcType=DATE},
+        SystemLogMessage_time = #{systemlogmessageTime,jdbcType=VARCHAR},
+        SystemLogMessage_successful = #{systemlogmessageSuccessful,jdbcType=VARCHAR},
+        SystemLogMessage_exception = #{systemlogmessageException,jdbcType=LONGVARCHAR}
+        where idSystemLogMessage = #{idsystemlogmessage,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.ssm.bean.mysql.SystemlogMessage">
+        update systemlogmessage
+        set SystemLogMessage_Name = #{systemlogmessageName,jdbcType=VARCHAR},
+        SystemLogMessage_Roles = #{systemlogmessageRoles,jdbcType=VARCHAR},
+        SystemLogMessag_Method = #{systemlogmessagMethod,jdbcType=VARCHAR},
+        SystemLogMessage_description = #{systemlogmessageDescription,jdbcType=VARCHAR},
+        SystemLogMessage_params = #{systemlogmessageParams,jdbcType=VARCHAR},
+        SystemLogMessage_startTime = #{systemlogmessageStarttime,jdbcType=DATE},
+        SystemLogMessage_time = #{systemlogmessageTime,jdbcType=VARCHAR},
+        SystemLogMessage_successful = #{systemlogmessageSuccessful,jdbcType=VARCHAR}
+        where idSystemLogMessage = #{idsystemlogmessage,jdbcType=INTEGER}
+    </update>
+</mapper>
